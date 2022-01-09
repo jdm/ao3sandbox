@@ -31,6 +31,9 @@
   .instructions li {
       margin: 1em;
   }
+  svg {
+      display: none;
+  }
 </style>
 <style id="workskin-style"></style>
 </head>
@@ -61,6 +64,7 @@
         content.classList.add('hidden');
         document.getElementById('editor').classList.remove('hidden');
         document.getElementById('editor').getElementsByTagName('textarea')[0].focus();
+        document.querySelector('.work style').remove();
         window.onbeforeunload = function() {
             return true;
         }
