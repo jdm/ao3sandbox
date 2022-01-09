@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" type="text/css" media="screen" href="https://archiveofourown.org/stylesheets/skins/skin_873_archive_2_0/1_site_screen_.css"></link>
+<link rel="stylesheet" type="text/css" media="only screen and (max-width: 62em), handheld" href="https://archiveofourown.org/stylesheets/skins/skin_873_archive_2_0/4_site_midsize.handheld_.css"></link>
+<link rel="stylesheet" type="text/css" media="only screen and (max-width: 42em), handheld" href="https://archiveofourown.org/stylesheets/skins/skin_873_archive_2_0/5_site_narrow.handheld_.css"></link>
+<link rel="stylesheet" type="text/css" media="speech" href="https://archiveofourown.org/stylesheets/skins/skin_873_archive_2_0/6_site_speech_.css"></link>
+<link rel="stylesheet" type="text/css" media="print" href="https://archiveofourown.org/stylesheets/skins/skin_873_archive_2_0/7_site_print_.css"></link>
+<style>
+  #editor {
+      position: fixed;
+      z-index: 25;
+      right: 0;
+      width: 30%;
+      height: 50vh;
+  }
+  #editor button {
+      width: 100%;
+  }
+  #editor textarea {
+  }
+  .hidden {
+      display: none;
+  }
+  .instructions ol, .instructions li {
+      list-style: revert;
+      margin: revert;
+      padding: revert;
+      vertical-align: top;
+  }
+  .instructions li {
+      margin: 1em;
+  }
+</style>
+<style id="workskin-style"></style>
+</head>
+<body>
+  <script>
+    function update(elem) {
+        //console.log(elem, elem.value);
+        document.getElementById('workskin-style').innerHTML = elem.value;
+    }
+    function toggle(editor) {
+        let textarea = editor.firstElementChild.nextElementSibling;
+        textarea.classList.toggle("hidden");
+        if (textarea.classList.contains("hidden")) {
+            editor.firstElementChild.textContent = "<<";
+        } else {
+            editor.firstElementChild.textContent = ">>";
+        }
+        //console.log();
+        
+    }
+
+    function toggleHidden(selector) {
+        document.querySelector(selector).classList.toggle('hidden');
+    }
+
+    function init(content) {
+        document.getElementById('fic').innerHTML = document.getElementById('html').value;
+        content.classList.add('hidden');
+        document.getElementById('editor').classList.remove('hidden');
+        document.getElementById('editor').getElementsByTagName('textarea')[0].focus();
+        window.onbeforeunload = function() {
+            return true;
+        }
+    }
+  </script>
+
+  <div id="editor" class="hidden">
+    <button onclick="toggle(event.target.parentElement)">&gt;&gt;</button>
+    <textarea id="editor" oninput="update(event.target)">/*
+Edit the workskin in this textbox
+
+When you are satisfied with the results, copy the contents back into the real workskin on AO3.
+*/
+      
+#workskin {
+}</textarea>
+  </div>
+
+  <div id="uninitialized">
+    <p>Copy the HTML from AO3 into this textbox to set up the sandbox.
+    <p><button onclick="toggleHidden('#instructionsFF')">Toggle step by step instructions (Firefox).</button></p>
+    <p><button onclick="toggleHidden('#instructionsChrome')">Toggle step by step instructions (Chrome).</button></p>
+    <div id="instructionsFF" class="hidden instructions">
+      <ol>
+        <li>Open the web developer tools.<br><img src="firefox2.png" width="500px"></li>
+        <li>A bunch of panels should appear at the bottom of the view.<br><img src="firefox3.png" width="900px"></li>
+        <li>Right click on the first child of the <code>body</code> element and copy its outer HTML.<br><img src="firefox4.png" width="700px"></li>
+        <li>Paste the copied HTML into the textbox on this page.</li>
+      </ol>
+    </div>
+    <div id="instructionsChrome" class="instructions hidden">
+      <ol>
+        <li>Open the web developer tools.<br><img src="chrome1.png" width="500px"></li>
+        <li>A bunch of panels should appear at the right side of the view.<br><img src="chrome2.png" width="500px"></li>
+        <li>Right click on the first child of the <code>body</code> element and copy its outer HTML.<br><img src="chrome4.png" height="500px"></li>
+        <li>Paste the copied HTML into the textbox on this page.</li>
+      </ol>
+    </div>
+    <textarea id="html"></textarea><br>
+    <button onclick="init(this.parentElement)">Set up sandbox</button>
+  </div>
+
+  <div id="fic"></div>
+</body>
