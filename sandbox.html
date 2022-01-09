@@ -7,6 +7,7 @@
 <link rel="stylesheet" type="text/css" media="only screen and (max-width: 42em), handheld" href="https://archiveofourown.org/stylesheets/skins/skin_873_archive_2_0/5_site_narrow.handheld_.css"></link>
 <link rel="stylesheet" type="text/css" media="speech" href="https://archiveofourown.org/stylesheets/skins/skin_873_archive_2_0/6_site_speech_.css"></link>
 <link rel="stylesheet" type="text/css" media="print" href="https://archiveofourown.org/stylesheets/skins/skin_873_archive_2_0/7_site_print_.css"></link>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.14.0/beautify-css.js"></script>
 <style>
   #editor {
       position: fixed;
@@ -41,7 +42,6 @@
 <body>
   <script>
     function update(elem) {
-        //console.log(elem, elem.value);
         document.getElementById('workskin-style').innerHTML = elem.value;
     }
     function toggle(editor) {
@@ -52,7 +52,6 @@
         } else {
             editor.firstElementChild.textContent = ">>";
         }
-        //console.log();
         
     }
 
@@ -64,8 +63,19 @@
         document.getElementById('fic').innerHTML = document.getElementById('html').value;
         content.classList.add('hidden');
         document.getElementById('editor').classList.remove('hidden');
-        document.getElementById('editor').getElementsByTagName('textarea')[0].focus();
-        document.querySelector('.work style').remove();
+        let editorText = document.getElementById('editor').getElementsByTagName('textarea')[0];
+        editorText.focus();
+        var workskin = document.querySelector('.work style');
+        if (!workskin) {
+            workskin = document.querySelector('.works-show style');
+        }
+        if (workskin && workskin.textContent.trim().length) {
+            editorText.value = css_beautify(workskin.textContent);
+            update(editorText);
+        }
+        if (workskin) {
+            workskin.remove();
+        }
         window.onbeforeunload = function() {
             return true;
         }
